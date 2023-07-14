@@ -1,0 +1,36 @@
+export const text = {
+  API_URL: 'https://api.example.com',
+  MAX_USERS: 10,
+  COGNITO_POST_PASSED: '✓ source_cognito_post: PASSED',
+  COGNITO_POST_FAILED: '✕ source_cognito_post: FAILED',
+  COGNITO_POST_NOTE: 'Note: Check email and take note of confirmation code.',
+  COGNITO_CONFIRM_PASSED: '✓ source_cognito_confirm_put: PASSED',
+  COGNITO_CONFIRM_FAILED: '✕ source_cognito_confirm_put: FAILED',
+  USER_POST_PASSED: '✓ source_user_post: PASSED',
+  USER_POST_FAILED: '✕ source_user_post: FAILED',
+  REGISTRATION_COMPLETE_NOTE: 'Note: You have finished the registration process.',
+  LOGIN_POST_PASSED: '✓ source_login_post: PASSED',
+  LOGIN_POST_FAILED: '✕ source_login_post: FAILED',
+  USER_GET_PASSED: '✓ source_user_get: PASSED',
+  USER_GET_FAILED: '✕ source_user_get: FAILED',
+  LOGIN_SUCCESS_NOTE: 'Note: Login process is finished and successful.',
+  USER_PUT_PASSED: '✓ source_user_put: PASSED',
+  USER_PUT_FAILED: '✕ source_user_put: FAILED',
+  COGNITO_PUT_PASSED: '✓ source_cognito_put: PASSED',
+  COGNITO_PUT_FAILED: '✕ source_cognito_put: FAILED',
+  COGNITO_GET_PASSED: '✓ source_cognito_get: PASSED',
+  COGNITO_GET_FAILED: '✕ source_cognito_get: FAILED',
+  COGNITO_TOKEN_GET_PASSED: '✓ source_cognito_token_get: PASSED',
+  COGNITO_TOKEN_GET_FAILED: '✕ source_cognito_token_get: FAILED',
+  COGNITO_MFA_POST_PASSED: '✓ source_cognito_mfa_post: PASSED',
+  COGNITO_MFA_POST_FAILED: '✕ source_cognito_mfa_post: FAILED',
+  REGISTRATION_PRETEST_NOTE: 'Note: You are about to test the APIs used in registration process.',
+  LOGIN_PRETEST_NOTE: 'Note: You are about to test the APIs used in login process.',
+  SETTING_PRETEST_NOTE_1: 'Note: You are about to test the APIs used in setting page.',
+  SETTING_PRETEST_NOTE_2: 'Note: Excluded in this test are APIS used in change email, notification and account deletion',
+  SETTING_PRETEST_NOTE_3: 'Note: Each of the stated features has its own test file.',
+};
+
+export const headers = {
+  'Content-Type': 'application/json'
+}

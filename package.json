@@ -1,0 +1,20 @@
+{
+  "name": "tts_id",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "temp": "node parent.js && node child.js",
+    "temp2": "node test-registration.js --color && node test-registration-2.js --color"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "axios-mock-adapter": "^1.21.5",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.3.1"
+  }
+}
