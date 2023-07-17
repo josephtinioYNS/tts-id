@@ -11,9 +11,11 @@ const rl = readline.createInterface({
  	output: process.stdout
 });
 
+console.log(chalk.cyan(text.ASTERISK_NOTE));
 console.log(chalk.cyan(text.REGISTRATION_PRETEST_NOTE));
+console.log(chalk.cyan(text.ASTERISK_NOTE));
 
-rl.question('Enter a valid email: ', email => {
+rl.question('> Enter a valid email: ', email => {
  	axios.post(
  	    devAPIURL,
  	    {
@@ -32,7 +34,7 @@ rl.question('Enter a valid email: ', email => {
  	    	? (() => {
  	    		let ccode = res.data.body.response.ccode;
 			    console.log(chalk.bgGreen.bold(text.COGNITO_POST_PASSED));
-			    console.log(chalk.cyan(text.COGNITO_POST_NOTE));
+			    console.log(chalk.magenta(text.COGNITO_POST_NOTE));
 			    cognitoConfirm(ccode, email);
 			})()
  	    	: (() => {
@@ -49,7 +51,7 @@ rl.question('Enter a valid email: ', email => {
 });
 
 const cognitoConfirm = (ccode, email) => {
-	rl.question('Enter the confirmation code: ', code => {
+	rl.question('> Enter the confirmation code: ', code => {
 	 	axios.post(
 	 	    devAPIURL,
 	 	    {
@@ -105,8 +107,7 @@ const sourceUserPost = (ccode, email) => {
  	    res.data.body.status === 200
  	    	? (() => {
 			    console.log(chalk.bgGreen.bold(text.USER_POST_PASSED));
-			    console.log(chalk.cyan(text.REGISTRATION_COMPLETE_NOTE));
-			    process.exit();
+			    masterCodeGet();
 			})()
  	    	: (() => {
  	    		console.log(chalk.bgRed.bold(text.USER_POST_FAILED));
@@ -116,6 +117,38 @@ const sourceUserPost = (ccode, email) => {
  	})
  	.catch(err => {
  		console.log(chalk.bgRed.bold(text.USER_POST_FAILED));
+ 	    console.error(err);
+ 	    process.exit(1);
+ 	});
+}
+
+const masterCodeGet = () => {
+ 	axios.post(
+ 	    devAPIURL,
+ 	    {
+ 	        params: {
+ 	        	apiname: 'master_code_get',
+ 	        }
+ 	    },
+ 	    {
+ 	        headers: headers
+ 	    }
+ 	)
+ 	.then(res => {
+ 	    res.data.body.status === 200
+ 	    	? (() => {
+			    console.log(chalk.bgGreen.bold(text.MASTER_CODE_GET_PASSED));
+			    console.log(chalk.magenta(text.REGISTRATION_COMPLETE_NOTE));
+			    process.exit();
+			})()
+ 	    	: (() => {
+ 	    		console.log(chalk.bgRed.bold(text.MASTER_CODE_GET_FAILED));
+			    console.log(res.data);
+			    process.exit(1);
+			})();
+ 	})
+ 	.catch(err => {
+ 		console.log(chalk.bgRed.bold(text.MASTER_CODE_GET_FAILED));
  	    console.error(err);
  	    process.exit(1);
  	});

@@ -11,9 +11,11 @@ const rl = readline.createInterface({
  	output: process.stdout
 });
 
+console.log(chalk.cyan(text.ASTERISK_NOTE));
 console.log(chalk.cyan(text.LOGIN_PRETEST_NOTE));
+console.log(chalk.cyan(text.ASTERISK_NOTE));
 
-rl.question('Enter email registered using this program: ', email => {
+rl.question('> Enter email registered using this program: ', email => {
  	axios.post(
  	    devAPIURL,
  	    {
@@ -129,6 +131,7 @@ const sourceCognitoTokenGet = (refreshToken) => {
  	    res.data.body.status === 200
  	    	? (() => {
 			    console.log(chalk.bgGreen.bold(text.COGNITO_TOKEN_GET_PASSED));
+			    console.log(chalk.magenta(text.LOGIN_COMPLETE_NOTE));
 			    process.exit();
 			})()
  	    	: (() => {

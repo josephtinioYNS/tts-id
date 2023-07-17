@@ -12,9 +12,10 @@ const rl = readline.createInterface({
 });
 
 console.log(chalk.cyan(text.ASTERISK_NOTE));
-console.log(chalk.cyan(text.SETTING_PRETEST_NOTE_1));
-console.log(chalk.cyan(text.SETTING_PRETEST_NOTE_2));
-console.log(chalk.cyan(text.SETTING_PRETEST_NOTE_3));
+console.log(chalk.cyan(text.NOTIFICATION_PRETEST_NOTE_1));
+console.log(chalk.cyan(text.NOTIFICATION_PRETEST_NOTE_2));
+console.log(chalk.cyan(text.NOTIFICATION_PRETEST_NOTE_3));
+console.log(chalk.yellow(text.WARNING_NOTE));
 console.log(chalk.cyan(text.ASTERISK_NOTE));
 
 rl.question('> Enter email registered using this program: ', email => {
@@ -36,7 +37,7 @@ rl.question('> Enter email registered using this program: ', email => {
  	    	? (() => {
  	    		let accessToken =  res.data.body.response.AccessToken;
 			    console.log(chalk.bgGreen.bold(text.LOGIN_POST_PASSED));
-			    sourceUserPut(accessToken, email);
+			    sourceUserNotifPost(accessToken);
 			})()
  	    	: (() => {
  	    		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
@@ -51,12 +52,12 @@ rl.question('> Enter email registered using this program: ', email => {
  	});
 });
 
-const sourceUserPut = (accessToken, email) => {
+const sourceUserNotifPost = (accessToken) => {
  	axios.post(
  	    devAPIURL,
  	    {
  	        params: {
-  				apiname: 'source_user_put',
+  				apiname: 'source_user_notification_post',
   				AccessToken: accessToken,
   			}
  	    },
@@ -67,31 +68,31 @@ const sourceUserPut = (accessToken, email) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_PUT_PASSED));
-			    sourceCognitoPut(accessToken, email);
+			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_POST_PASSED));
+			    sourceUserNotifPut(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_PUT_FAILED));
+ 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_POST_FAILED));
 			    console.log(res.data);
 			    process.exit(1);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_PUT_FAILED));
+ 		console.log(chalk.bgRed.bold(text.USER_NOTIF_POST_FAILED));
  	    console.error(err);
  	    process.exit(1);
  	});
 }
 
-const sourceCognitoPut = (accessToken, email) => {
+const sourceUserNotifPut = (accessToken) => {
  	axios.post(
  	    devAPIURL,
  	    {
  	        params: {
-  				apiname: 'source_cognito_put',
+  				apiname: 'source_user_notification_put',
   				AccessToken: accessToken,
-  				type: 'email',
-  				email: email
+  				mid_mail: '1,2,3',
+  				mid_browser: '1',
   			}
  	    },
  	    {
@@ -101,30 +102,29 @@ const sourceCognitoPut = (accessToken, email) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.COGNITO_PUT_PASSED));
-			    sourceCognitoMfaPost(accessToken)
+			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_PUT_PASSED));
+			    sourceUserNotifGet(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_PUT_FAILED));
+ 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_PUT_FAILED));
 			    console.log(res.data);
 			    process.exit(1);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_PUT_FAILED));
+ 		console.log(chalk.bgRed.bold(text.USER_NOTIF_PUT_FAILED));
  	    console.error(err);
  	    process.exit(1);
  	});
 }
 
-const sourceCognitoMfaPost = (accessToken) => {
+const sourceUserNotifGet = (accessToken) => {
  	axios.post(
  	    devAPIURL,
  	    {
  	        params: {
-  				apiname: 'source_cognito_mfa_post',
-  				type: 'mfa_off',
-        		AccessToken: accessToken,
+  				apiname: 'source_user_notification_get',
+  				AccessToken: accessToken,
   			}
  	    },
  	    {
@@ -134,18 +134,18 @@ const sourceCognitoMfaPost = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.COGNITO_MFA_POST_PASSED));
-			    console.log(chalk.magenta(text.SETTING_COMPLETE_NOTE));
+			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_GET_PASSED));
+			    console.log(chalk.magenta(text.NOTIFICATION_COMPLETE_NOTE));
 			    process.exit();
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_MFA_POST_FAILED));
+ 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_GET_FAILED));
 			    console.log(res.data);
 			    process.exit(1);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_MFA_POST_FAILED));
+ 		console.log(chalk.bgRed.bold(text.USER_NOTIF_GET_FAILED));
  	    console.error(err);
  	    process.exit(1);
  	});
