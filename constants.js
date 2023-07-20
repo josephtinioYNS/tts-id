@@ -39,6 +39,12 @@ export const text = {
   USER_NOTIF_GET_FAILED: '✕ source_user_notification_get: FAILED',
   USER_GET_PASSED: '✓ source_user_get: PASSED',
   USER_GET_FAILED: '✕ source_user_get: FAILED',
+  USER_SERVICE_POST_PASSED: '✓ source_user_service_post: PASSED',
+  USER_SERVICE_POST_FAILED: '✕ source_user_service_post: FAILED',
+  USER_SERVICE_PUT_PASSED: '✓ source_user_service_put: PASSED',
+  USER_SERVICE_PUT_FAILED: '✕ source_user_service_put: FAILED',
+  USER_SERVICE_GET_PASSED: '✓ source_user_service_get: PASSED',
+  USER_SERVICE_GET_FAILED: '✕ source_user_service_get: FAILED',
   MASTER_CODE_GET_PASSED: '✓ master_code_get: PASSED',
   MASTER_CODE_GET_FAILED: '✕ master_code_get: FAILED',
   CHANGE_MAIL_PRETEST_NOTE: 'Note: You are about to test the APIs used in change email setting.',
@@ -60,6 +66,9 @@ export const text = {
   SETTING_PRETEST_NOTE_2: 'Note: Excluded in this test are APIS used in change email, notification and account deletion',
   SETTING_PRETEST_NOTE_3: 'Note: Each of the stated features has its own test file.',
   SETTING_COMPLETE_NOTE: 'Note: Done testing the APIs in setting page.',
+  USER_SERVICE_PRETEST_NOTE_1: 'Note: You are about to test the APIs used in user service.',
+  USER_SERVICE_PRETEST_NOTE_2: 'Note: The API responsible for creating a user service data can only be run once.',
+  USER_SERVICE_PRETEST_NOTE_3: 'Note: In order to test this set of APIs, the account should be deleted then registered again.',
   WARNING_NOTE: 'Warning: Execute this with precaution.',
   ASTERISK_NOTE: '**********************************************************************'
 };
