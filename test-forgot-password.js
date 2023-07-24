@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import readline from 'readline';
 import { config } from 'dotenv';
+import { passed, failed } from './common.js';
 import { text, headers } from './constants.js';
 config();
 
@@ -31,20 +32,15 @@ rl.question('> Enter email registered using this program: ', email => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.COGNITO_FORGOT_PW_PASSED));
-			    console.log(chalk.magenta(text.COGNITO_FORGOT_PW_NOTE));
+			    passed(text.COGNITO_FORGOT_PW_PASSED, text.COGNITO_FORGOT_PW_NOTE);
 			    forgotPwPost(email);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_FORGOT_PW_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.COGNITO_FORGOT_PW_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_FORGOT_PW_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.COGNITO_FORGOT_PW_FAILED, err);
  	});
 });
 
@@ -67,20 +63,15 @@ const forgotPwPost = (email) => {
 	 	.then(res => {
 	 	    res.data.body.status === 200
 	 	    	? (() => {
-				    console.log(chalk.bgGreen.bold(text.COGNITO_CONFIRM_FORGOT_PW_PASSED));
-			    	console.log(chalk.magenta(text.FORGOT_PW_COMPLETE_NOTE));
+			    	passed(text.COGNITO_CONFIRM_FORGOT_PW_PASSED, text.FORGOT_PW_COMPLETE_NOTE);
 				    process.exit();
 				})()
 	 	    	: (() => {
-	 	    		console.log(chalk.bgRed.bold(text.COGNITO_CONFIRM_FORGOT_PW_FAILED));
-				    console.log(res.data);
-				    process.exit(1);
+				    failed(text.COGNITO_CONFIRM_FORGOT_PW_FAILED, res.data);
 				})();
 	 	})
 	 	.catch(err => {
-	 		console.log(chalk.bgRed.bold(text.COGNITO_CONFIRM_FORGOT_PW_FAILED));
-	 	    console.error(err);
-	 	    process.exit(1);
+	 		failed(text.COGNITO_CONFIRM_FORGOT_PW_FAILED, err);
 	 	});
 	});
 }

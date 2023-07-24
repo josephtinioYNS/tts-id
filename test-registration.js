@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import readline from 'readline';
 import { config } from 'dotenv';
+import { passed, failed } from './common.js';
 import { text, headers } from './constants.js';
 config();
 
@@ -33,20 +34,15 @@ rl.question('> Enter a valid email: ', email => {
  	    res.data.body.status === 200
  	    	? (() => {
  	    		let ccode = res.data.body.response.ccode;
-			    console.log(chalk.bgGreen.bold(text.COGNITO_POST_PASSED));
-			    console.log(chalk.magenta(text.COGNITO_POST_NOTE));
+			    passed(text.COGNITO_POST_PASSED, text.COGNITO_POST_NOTE);
 			    cognitoConfirm(ccode, email);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.COGNITO_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.COGNITO_POST_FAILED, err);
  	});
 });
 
@@ -68,19 +64,15 @@ const cognitoConfirm = (ccode, email) => {
 	 	.then(res => {
 	 	    res.data.body.status === 200
 	 	    	? (() => {
-				    console.log(chalk.bgGreen.bold(text.COGNITO_CONFIRM_PASSED));
+				    passed(text.COGNITO_CONFIRM_PASSED);
 				    sourceUserPost(ccode, email);
 				})()
 	 	    	: (() => {
-	 	    		console.log(chalk.bgRed.bold(text.COGNITO_CONFIRM_FAILED));
-				    console.log(res.data);
-				    process.exit(1);
+				    failed(text.COGNITO_CONFIRM_FAILED, res.data);
 				})();
 	 	})
 	 	.catch(err => {
-	 		console.log(chalk.bgRed.bold(text.COGNITO_CONFIRM_FAILED));
-	 	    console.error(err);
-			process.exit(1);
+	 		failed(text.COGNITO_CONFIRM_FAILED, err);
 	 	});
 	})
 }
@@ -96,7 +88,8 @@ const sourceUserPost = (ccode, email) => {
  	        	gender: 0,
  	        	birthday: '19800101',
  	        	mid: [1, 43, 112],
- 	        	email: email
+ 	        	email: email,
+ 	        	gcode: '123456789'
  	        }
  	    },
  	    {
@@ -106,19 +99,15 @@ const sourceUserPost = (ccode, email) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_POST_PASSED));
+			    passed(text.USER_POST_PASSED);
 			    masterCodeGet();
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.USER_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_POST_FAILED, err);
  	});
 }
 
@@ -137,19 +126,14 @@ const masterCodeGet = () => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.MASTER_CODE_GET_PASSED));
-			    console.log(chalk.magenta(text.REGISTRATION_COMPLETE_NOTE));
+			    passed(text.MASTER_CODE_GET_PASSED, text.REGISTRATION_COMPLETE_NOTE);
 			    process.exit();
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.MASTER_CODE_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.MASTER_CODE_GET_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.MASTER_CODE_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.MASTER_CODE_GET_FAILED, err);
  	});
 }

@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import readline from 'readline';
 import { config } from 'dotenv';
+import { passed, failed } from './common.js';
 import { text, headers } from './constants.js';
 config();
 
@@ -36,19 +37,15 @@ rl.question('> Enter email registered using this program: ', email => {
  	    res.data.body.status === 200
  	    	? (() => {
  	    		let accessToken =  res.data.body.response.AccessToken;
-			    console.log(chalk.bgGreen.bold(text.LOGIN_POST_PASSED));
+			    passed(text.LOGIN_POST_PASSED);
 			    sourceUserNotifPost(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.LOGIN_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.LOGIN_POST_FAILED, err);
  	});
 });
 
@@ -68,19 +65,15 @@ const sourceUserNotifPost = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_POST_PASSED));
+			    passed(text.USER_NOTIF_POST_PASSED)
 			    sourceUserNotifPut(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.USER_NOTIF_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_NOTIF_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_NOTIF_POST_FAILED, err);
  	});
 }
 
@@ -102,19 +95,15 @@ const sourceUserNotifPut = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_PUT_PASSED));
+			    passed(text.USER_NOTIF_PUT_PASSED);
 			    sourceUserNotifGet(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_PUT_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.USER_NOTIF_PUT_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_NOTIF_PUT_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_NOTIF_PUT_FAILED, err);
  	});
 }
 
@@ -134,19 +123,14 @@ const sourceUserNotifGet = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_NOTIF_GET_PASSED));
-			    console.log(chalk.magenta(text.NOTIFICATION_COMPLETE_NOTE));
+			    passed(text.USER_NOTIF_GET_PASSED, text.NOTIFICATION_COMPLETE_NOTE);
 			    process.exit();
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_NOTIF_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.USER_NOTIF_GET_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_NOTIF_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_NOTIF_GET_FAILED, err);
  	});
 }

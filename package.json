@@ -8,8 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "register-login-setting": "node test-registration.js --color && node test-login.js --color && node test-setting.js --color",
     "pw-email-notif": "node test-forgot-password.js --color && node test-change-mail.js --color && node test-notification.js --color",
-    "service-delete-account": "node test-user-service.js --color && node test-delete-account.js --color",
-    "test-all": "npm run register-login-setting && npm run pw-email-notif && npm run service-delete-account"
+    "service-mfa-others": "node test-user-service.js --color && node test-two-way-auth.js --color && node test-others.js --color",
+    "delete-account": "node test-delete-account.js --color",
+    "test-all": "npm run register-login-setting && npm run pw-email-notif && npm run service-mfa-others && npm run delete-account"
   },
   "author": "JT-YNS",
   "license": "ISC",

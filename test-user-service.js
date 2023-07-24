@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import readline from 'readline';
 import { config } from 'dotenv';
+import { passed, failed } from './common.js';
 import { text, headers } from './constants.js';
 config();
 
@@ -36,19 +37,15 @@ rl.question('> Enter email registered using this program: ', email => {
  	    res.data.body.status === 200
  	    	? (() => {
  	    		let accessToken =  res.data.body.response.AccessToken;
-			    console.log(chalk.bgGreen.bold(text.LOGIN_POST_PASSED));
+			    passed(text.LOGIN_POST_PASSED);
 			    sourceUserServicePost(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.LOGIN_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.LOGIN_POST_FAILED, res.data);
  	});
 });
 
@@ -69,19 +66,15 @@ const sourceUserServicePost = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_SERVICE_POST_PASSED));
+			    passed(text.USER_SERVICE_POST_PASSED);
 			    sourceUserServicePut(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_SERVICE_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.USER_SERVICE_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_SERVICE_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_SERVICE_POST_FAILED, err);
  	});
 }
 
@@ -103,19 +96,15 @@ const sourceUserServicePut = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_SERVICE_PUT_PASSED));
+			    passed(text.USER_SERVICE_PUT_PASSED);
 			    sourceUserServiceGet(accessToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_SERVICE_PUT_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.USER_SERVICE_PUT_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_SERVICE_PUT_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_SERVICE_PUT_FAILED, err);
  	});
 }
 
@@ -135,18 +124,14 @@ const sourceUserServiceGet = (accessToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_SERVICE_GET_PASSED));
+			    passed(text.USER_SERVICE_GET_PASSED, text.USER_SERVICE_COMPLETE_NOTE);
 			    process.exit();
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_SERVICE_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+ 	    		failed(text.USER_SERVICE_GET_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_SERVICE_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 		failed(text.USER_SERVICE_GET_FAILED, err);
  	});
 }

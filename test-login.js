@@ -2,6 +2,7 @@ import axios from 'axios';
 import chalk from 'chalk';
 import readline from 'readline';
 import { config } from 'dotenv';
+import { passed, failed } from './common.js';
 import { text, headers } from './constants.js';
 config();
 
@@ -34,19 +35,15 @@ rl.question('> Enter email registered using this program: ', email => {
  	    	? (() => {
  	    		let accessToken =  res.data.body.response.AccessToken;
  	    		let refreshToken =  res.data.body.response.RefreshToken;
-			    console.log(chalk.bgGreen.bold(text.LOGIN_POST_PASSED));
+			    passed(text.LOGIN_POST_PASSED);
 			    sourceUserGet(accessToken, refreshToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.LOGIN_POST_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.LOGIN_POST_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 	    failed(text.LOGIN_POST_FAILED, err);
  	});
 });
 
@@ -66,19 +63,15 @@ const sourceUserGet = (accessToken, refreshToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.USER_GET_PASSED));
+			    passed(text.USER_GET_PASSED)
 			    sourceCognitoGet(accessToken, refreshToken)
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.USER_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.USER_GET_FAILED, res.data)
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.USER_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 	    failed(text.USER_GET_FAILED, err)
  	});
 }
 
@@ -98,23 +91,19 @@ const sourceCognitoGet = (accessToken, refreshToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.COGNITO_GET_PASSED));
-			    sourceCognitoTokenGet(refreshToken)
+			    passed(text.COGNITO_GET_PASSED);
+			    sourceCognitoTokenGet(accessToken, refreshToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.COGNITO_GET_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 	    failed(text.COGNITO_GET_FAILED, err)
  	});
 }
 
-const sourceCognitoTokenGet = (refreshToken) => {
+const sourceCognitoTokenGet = (accessToken, refreshToken) => {
  	axios.post(
  	    devAPIURL,
  	    {
@@ -130,19 +119,43 @@ const sourceCognitoTokenGet = (refreshToken) => {
  	.then(res => {
  	    res.data.body.status === 200
  	    	? (() => {
-			    console.log(chalk.bgGreen.bold(text.COGNITO_TOKEN_GET_PASSED));
-			    console.log(chalk.magenta(text.LOGIN_COMPLETE_NOTE));
-			    process.exit();
+			    passed(text.COGNITO_TOKEN_GET_PASSED);
+			    sourceSnsCcodeGet(accessToken, refreshToken);
 			})()
  	    	: (() => {
- 	    		console.log(chalk.bgRed.bold(text.COGNITO_TOKEN_GET_FAILED));
-			    console.log(res.data);
-			    process.exit(1);
+			    failed(text.COGNITO_TOKEN_GET_FAILED, res.data);
 			})();
  	})
  	.catch(err => {
- 		console.log(chalk.bgRed.bold(text.COGNITO_TOKEN_GET_FAILED));
- 	    console.error(err);
- 	    process.exit(1);
+ 	    failed(text.COGNITO_TOKEN_GET_FAILED, err);
+ 	});
+}
+
+const sourceSnsCcodeGet = (accessToken, refreshToken) => {
+ 	axios.post(
+ 	    devAPIURL,
+ 	    {
+ 	        params: {
+  				apiname: 'source_sns_ccode_get',
+  				snsType: 'gcode',
+  				snsId: '123456789'
+  			}
+ 	    },
+ 	    {
+ 	        headers: headers
+ 	    }
+ 	)
+ 	.then(res => {
+ 	    res.data.body.status === 200
+ 	    	? (() => {
+			    passed(text.SNS_CCODE_GET_PASSED, text.LOGIN_COMPLETE_NOTE)
+			    process.exit();
+			})()
+ 	    	: (() => {
+			    failed(text.SNS_CCODE_GET_FAILED, res.data);
+			})();
+ 	})
+ 	.catch(err => {
+ 	    failed(text.SNS_CCODE_GET_FAILED, err);
  	});
 }
